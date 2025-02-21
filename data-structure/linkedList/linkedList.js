@@ -16,6 +16,13 @@
 
 // OBS: The value can be anything, can be even arrays and hash tables
 
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
 class LinkedList {
   constructor(value) {
     this.head = {
@@ -27,13 +34,74 @@ class LinkedList {
   }
 
   append(value) {
-    const newNode = {
-      value,
-      next: null
-    }
+    const newNode = new Node(value)
     this.tail.next = newNode;
     this.tail = newNode;
     this.length++;
+
+    return this;
+  }
+
+  prepend(value) {
+    const newNode = new Node(value);
+    newNode.next = this.head;
+    this.head = newNode;
+    this.length++;
+
+    return this;
+  }
+
+  printList() {
+    const array = [];
+    let currentNode = this.head;
+
+    while(currentNode !== null) {
+      array.push(currentNode.value);
+      currentNode = currentNode.next;
+    }
+
+    return array;
+  }
+
+  insert(index, value) {
+    if(index === 0) {
+      this.prepend(value);
+      return this.printList();
+    }
+
+    if(index >= this.length) {
+      return this.append(value);
+    }
+
+    const newNode = new Node(value);
+    const leader = this.traverseToIndex(index - 1);
+    const holdingPointer = leader.next;
+    leader.next = newNode;
+    newNode.next = holdingPointer;
+    this.length++;
+
+    return this.printList();
+  }
+
+  remove(index) {
+    const leader = this.traverseToIndex(index - 1);
+    const unwantedNode = leader.next;
+    leader.next = unwantedNode.next;
+    this.length--;
+    
+    return this.printList();
+  }
+
+  traverseToIndex(index) {
+    let counter = 0;
+    let currentNode = this.head;
+
+    while(counter !== index) {
+      currentNode = currentNode.next;
+      counter++;
+    }
+
+    return currentNode;
   }
 }
 
@@ -41,5 +109,9 @@ const linkedList = new LinkedList(10);
 
 linkedList.append(5);
 linkedList.append(16);
+linkedList.prepend(1);
+linkedList.insert(200, 37);
+linkedList.insert(2, 85);
+linkedList.remove(4);
 
-console.log(linkedList)
+console.log(linkedList.printList())
