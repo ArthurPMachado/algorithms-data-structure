@@ -1,6 +1,6 @@
 const numbers = [99, 37, 451, 4513, 5, 12, 78, 6, 2, 458, 892, 74, 0]
 
-function selectionSort(array) {
+function selectionSort(array) { // O(n^2)
   const length = array.length;
   for (let index = 0; index < length; index++) {
     // set current index as minimum
